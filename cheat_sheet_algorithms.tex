@@ -20,6 +20,47 @@
 
 \tableofcontents
 
+\section{Задачи}
+
+\subsection{Удаление элемента из массива за линейное время}
+
+Дан массив целых чисел. Требуется удалить заданный элемент \url{https://programforyou.ru/poleznoe/how-to-remove-values-from-array-effectively}
+
+Решение на Python
+\begin{lstlisting}[
+style = ironpython,
+numbers = none
+]
+import typing as t
+
+def remove_elem(array: t.List[int], value: int) -> t.List[int]:
+    """Удаляет элемент по значению"""
+    if (value not in set(array)):
+        raise ValueError(
+            f"Ошибка! Указанное значение ({value}) не встречается среди элементов списка"
+        )
+        
+    j = 0
+    # в Python параметры в функцию можно передать только по соиспользованию;
+    # на практике это означает, что формальные параметры функции всегда получают
+    # копии ссылок на фактические аргументы, поэтому если объект изменяемый, то
+    # его можно изменить из-под функции;
+    # чтобы не изменять список в глобальной области видимости, приходится создавать копию списка
+    array = array[:]  
+    for elem in enumerate(array):
+        if (elem != value):
+            array[j] = elem
+            j += 1
+        
+        rerturn array[:idx]
+        
+def main():
+    array = [10, 8, -5, 6, 0, 3]
+    remove_elem(array, value=6)  # [10, 8, -5, 0, 3]
+    
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
 
 
 
