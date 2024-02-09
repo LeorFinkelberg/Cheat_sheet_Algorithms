@@ -42,7 +42,7 @@ def seq_to_ranges(seq: t.Sequence[int]) -> str:
     if len(seq) == 1:
         return str(seq[0])
     
-    seq: t.List[int] = sorted(seq)
+    seq: t.List[int] = sorted(set(seq))
     
     groups: t.List[t.List[int]] = []
     group: t.List[int] = [seq[0]]
@@ -93,33 +93,42 @@ numbers = none
 ]
 import typing as t
 
-def remove_elem(array: t.List[int], value: int) -> t.List[int]:
+def remove_elem(seq: t.Sequence[int], remove_value: int) -> t.List[int]:
     """Удаляет элемент по значению"""
-    if (value not in set(array)):
-        raise ValueError(
-            f"Ошибка! Указанное значение ({value}) не встречается среди элементов списка"
-        )
-        
-    j = 0
     # в Python параметры в функцию можно передать только по соиспользованию;
     # на практике это означает, что формальные параметры функции всегда получают
     # копии ссылок на фактические аргументы, поэтому если объект изменяемый, то
     # его можно изменить из-под функции;
-    # чтобы не изменять список в глобальной области видимости, приходится создавать копию списка
-    array = array[:]  
-    for idx, elem in enumerate(array):
-        if (elem != value):
-            array[j] = elem
-            j += 1
-        
-        rerturn array[:idx]
-        
-def main():
-    array = [10, 8, -5, 6, 0, 3]
-    remove_elem(array, value=6)  # [10, 8, -5, 0, 3]
+    # чтобы не изменять список в глобальной области видимости,
+    # приходится создавать копию списка с помощью list()
+    seq: t.List[int] = list(seq)
     
-if __name__ == "__main__":
-    main()
+    if (value not in seq):
+        raise ValueError(
+            f"Ошибка! Указанное значение ({value}) "
+            "не встречается среди элементов списка"
+        )
+        
+    j = 0
+    for value in seq:
+        # если текущий элемент не совпадает с удаляемым, то элемент 
+        # помещается на свое же место и индекс инкрементируется;
+        # в противном случае индекс элемента не инкрементируется и потому
+        # следующий элемент встает на место удаленного
+        if (value != remove_value):
+            seq[j] = value
+            j += 1
+    
+    # итоговый список будет очевидно на один элемент короче,
+    # поэтому нужно забрать все элементы кроме последнего
+    rerturn seq[:-1]
+        
+# Использование
+seq = [10, 8, -5, 6, 0, 3]
+remove_elem(seq, remove_value=6)  # [10, 8, -5, 0, 3]
+
+seq = (5, 3, 0, 6)
+remove_elem(seq, remove_value=3)  # [5, 0, 6]
 \end{lstlisting}
 
 
